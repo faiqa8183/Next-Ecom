@@ -1,18 +1,24 @@
 import { useState } from 'react';
 import { categories } from '@/utils/constants';
+import Upload_Images from './Upload_image';
 
 const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
   const [formData, setFormData] = useState(initialData);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
+  const handleImageUpload=(url)=>{
+    setFormData((prev) => ({ ...prev, image: url }));
+  }
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+    const { name, value} = e.target;
 
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+
+  };
+  console.log("formData",formData)
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
@@ -24,9 +30,8 @@ const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
         { label: 'Title', name: 'title', type: 'text' },
         { label: 'Description', name: 'description', type: 'textarea' },
         { label: 'Price', name: 'price', type: 'number' },
-        { label: 'Discount Price', name: 'discountPrice', type: 'number' },
         { label: 'Quantity', name: 'quantity', type: 'number' },
-        { label: 'Image URL', name: 'image', type: 'text' },
+        { label: 'Product Image', name: 'image', type: 'file' },
       ].map(({ label, name, type }) => (
         <div key={name}>
           <label className="block text-sm font-medium mb-1">{label}</label>
@@ -38,7 +43,10 @@ const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
               className="w-full border rounded px-3 py-2 text-sm"
               required
             />
-          ) : (
+          ) :type === 'file' ? (
+            <Upload_Images onImageUpload={handleImageUpload} />
+
+          ): (
             <input
               type={type}
               name={name}
@@ -50,7 +58,6 @@ const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
           )}
         </div>
       ))}
-
       <div>
         <label className="block text-sm font-medium mb-1">Category</label>
         <select
@@ -72,14 +79,6 @@ const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
         >
           {isSubmitting ? 'Adding...' : 'Add Product'}
-        </button>
-        <button
-          type="button"
-          disabled={isConfirmed || isSubmitting}
-          onClick={() => setIsConfirmed(true)}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
-        >
-          {isConfirmed ? 'Product Added' : 'Confirm Product'}
         </button>
       </div>
     </form>

@@ -1,4 +1,5 @@
 const ProductPreview = ({ formData }) => {
+    console.log("previewData",formData)
     const { title, description, price, discountPrice, category, quantity, image } = formData;
   
     return (
@@ -17,7 +18,7 @@ const ProductPreview = ({ formData }) => {
           <p className="text-sm"><span className="font-medium">Quantity:</span> {quantity}</p>
           <p className="text-sm">
             <span className="font-medium">Price: </span>
-            {discountPrice ? (
+            {Number(discountPrice) !== 0 ? (
               <>
                 <span className="line-through text-red-500">${price}</span>
                 <span className="ml-2 text-green-600 font-semibold">${discountPrice}</span>

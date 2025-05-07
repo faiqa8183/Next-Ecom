@@ -15,8 +15,6 @@ const productSchema = new mongoose.Schema(
     },
     quantity: { type: Number, required: true },
     image: { type: String, required: true }, // Image URL
-    ordered: { type: Number, default: 0 }, // Ordered quantity (this will be updated as purchases happen)
-    remaining: { type: Number, required: true }, // Remaining stock (calculated as quantity - ordered)
   },
   { timestamps: true }
 );
