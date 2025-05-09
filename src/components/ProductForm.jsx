@@ -4,7 +4,7 @@ import Upload_Images from './Upload_image';
 
 const ProductForm = ({ initialData, onSubmit, isSubmitting }) => {
   const [formData, setFormData] = useState(initialData);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  //const [isConfirmed, setIsConfirmed] = useState(false);
 
   const handleImageUpload=(url)=>{
     setFormData((prev) => ({ ...prev, image: url }));

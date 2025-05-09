@@ -2,9 +2,11 @@
 
 import AdminDashboardHome from "@/components/AdminDashboardHome";
 import { getSession } from "next-auth/react";
+import { getAllProducts } from "../api/products";
 
-const Dashboard = () => {
-  return <AdminDashboardHome />;
+const Dashboard = ({products}) => {
+  console.log(products)
+  return <AdminDashboardHome product={products}/>;
 };
 
 export const getServerSideProps = async (context) => {
@@ -18,9 +20,9 @@ export const getServerSideProps = async (context) => {
       },
     };
   }
-
+  const product = await getAllProducts()
   return {
-    props: {},
+    props: { products: JSON.parse(JSON.stringify(product)) }, //remove moongose object warper
   };
 };
 
