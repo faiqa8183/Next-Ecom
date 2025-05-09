@@ -7,7 +7,7 @@ import { getAllProducts } from "../api/products";
 const ProductIndex = ({ products }) => {
   console.log("product", products)
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const[selectshow, isShowSelected] =useState(false)
+  //const[selectshow, isShowSelected] =useState(false)
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
