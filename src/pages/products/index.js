@@ -3,6 +3,7 @@ import { useState } from "react";
 import CategoryNavbar from "../../components/CategoryNavbar";
 import UserMenu from "../../components/UserMenu";
 import { getAllProducts } from "../api/products";
+import Link from "next/link";
 
 const ProductIndex = ({ products }) => {
   console.log("product", products)
@@ -42,6 +43,9 @@ const ProductIndex = ({ products }) => {
           <p className="text-gray-600 text-sm mb-2">{prod.description}</p>
           <p className="text-pink-600 font-bold">${prod.price}</p>
           <button className="px-4 py-2 bg-white rounded hover:bg-pink-100 transition">Add Cart</button>
+          <Link href={`/products/${prod._id}`}>
+              <button className="text-blue-600">View Details</button>
+          </Link>
         </div>
         ))}
 
