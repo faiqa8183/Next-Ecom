@@ -19,20 +19,29 @@ const Productdetails = ({product}) => {
 
           <div>
             <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
+            <p className="text-2xl font-semibold text-red-600 mb-2">${product.price}</p>
+            <p className="text-sm text-gray-700">
+              {product.description}
+            </p>
             <div className="flex items-center space-x-2 text-yellow-500 mb-2">
               show Reviews
             </div>
-            <p className="text-2xl font-semibold text-red-600 mb-2">${product.price}</p>
-            <p className="text-sm text-gray-700">
-            {product.description}
-          </p>
+
+            <div>
+              <input
+                type='number'
+                name= 'order'
+                defaultValue="0"
+                className="w-full border rounded px-3 py-2 text-sm"
+              />
+              <button className="px-4 py-2 bg-blue rounded hover:bg-pink-100 transition">Add Cart</button>
+            </div>
           </div>
 
-
         </div>
-      <Link href="/auth/login">
-        <button style={{ marginTop: "20px", padding: "10px 20px" }}>
-          Go to Login
+      <Link href="/products">
+        <button className='flex items-center space-x-2 text-yellow-500 mb-2 rounded hover:bg-pink-100 transition' style={{ marginTop: "20px", padding: "10px 20px" }}>
+          Continue Shopping
         </button>
       </Link>
 
