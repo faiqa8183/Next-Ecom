@@ -3,12 +3,16 @@ import { useState } from "react";
 import CategoryNavbar from "../../components/CategoryNavbar";
 import UserMenu from "../../components/UserMenu";
 import { getAllProducts } from "../api/products";
+// Adjust path if necessary
+
 import Link from "next/link";
 
 const ProductIndex = ({ products }) => {
   console.log("product", products)
   const [selectedCategory, setSelectedCategory] = useState("All");
   //const[selectshow, isShowSelected] =useState(false)
+
+  
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -42,7 +46,7 @@ const ProductIndex = ({ products }) => {
           <h2 className="text-lg font-semibold text-gray-800">{prod.title}</h2>
           <p className="text-gray-600 text-sm mb-2">{prod.description}</p>
           <p className="text-pink-600 font-bold">${prod.price}</p>
-          <button className="px-4 py-2 bg-white rounded hover:bg-pink-100 transition">Add Cart</button>
+          <button >Add Cart</button>
           <Link href={`/products/${prod._id}`}>
               <button className="text-blue-600">View Details</button>
           </Link>

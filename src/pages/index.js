@@ -144,8 +144,8 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Navbar from "../components/Navbar";
-import HomePageContent from "@/components/HomePage";
+import Navbar from "../components/home/Navbar";
+import HomePageContent from "@/components/home/HomePage";
 
 const Home = () => {
   const { data: session, status } = useSession();

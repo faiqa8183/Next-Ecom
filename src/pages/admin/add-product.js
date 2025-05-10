@@ -46,7 +46,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="container">
+  <div className="container">
       <h1>Add New Product</h1>
       {error && <p className="error">{error}</p>}
 
@@ -59,6 +59,7 @@ const AddProduct = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

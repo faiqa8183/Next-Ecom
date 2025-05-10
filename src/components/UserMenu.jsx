@@ -3,10 +3,15 @@
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
+
+
+
 const UserMenu = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
-
+     
+      console.log("session" , session);
+     
   if (!session) return null;
 
   return (

@@ -66,16 +66,18 @@ import { useRouter } from "next/router";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true); 
     const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
-      callbackUrl: "/redirect",
+      // callbackUrl: "/redirect",
     });
 
     if (res.ok) {
@@ -84,9 +86,19 @@ const Login = () => {
       alert("Invalid credentials");
     }
   };
+  if (loading) {
+  return (
+    <div className="flex justify-center items-center h-screen bg-[#8B5E3C]">
+      <p className="text-white text-xl font-semibold">Loading...</p>
+    </div>
+  );
+}
+
 
   return (
+    
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen">
+      
       {/* Left Side Image */}
       <div
         className="hidden md:block bg-cover bg-center"

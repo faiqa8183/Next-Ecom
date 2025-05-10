@@ -1,11 +1,12 @@
 // pages/admin/dashboard.js
 
-import AdminDashboardHome from "@/components/AdminDashboardHome";
+import AdminDashboardHome from "@/components/admin/AdminDashboardHome";
 import { getSession } from "next-auth/react";
 import { getAllProducts } from "../api/products";
 
 const Dashboard = ({products}) => {
-  console.log(products)
+  console.log("products");
+  console.log(products);
   return <AdminDashboardHome product={products}/>;
 };
 

@@ -1,7 +1,7 @@
 // pages/edit-product/[id].js
 
 import { getSingleProduct } from "@/pages/api/products/[id]";
-import EditproductForm from "@/components/Editproductform";
+import EditproductForm from "@/components/admin/EditproductForm";
 
 const EditProductPage = ({ product }) => {
    return(
