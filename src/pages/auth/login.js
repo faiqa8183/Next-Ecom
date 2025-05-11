@@ -106,7 +106,7 @@ const Login = () => {
       />
 
       {/* Right Side: Login Form */}
-      <div className="flex justify-center items-center bg-[#b5784a]">
+      <div className="flex justify-center  items-center bg-white">
         <div className="p-8 bg-white w-full max-w-sm">
           {/* Logo */}
           <div className="mb-6 cursor-pointer" onClick={() => router.push("/")}>
@@ -116,7 +116,7 @@ const Login = () => {
             </span>
           </div>
 
-          <h2 className="text-2xl font-bold mb-6">Login</h2>
+          <h2 className="text-2xl shadow-2xl font-bold mb-6">Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-sm mb-2">Email</label>

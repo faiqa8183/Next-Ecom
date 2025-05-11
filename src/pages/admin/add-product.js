@@ -47,13 +47,13 @@ const AddProduct = () => {
 
   return (
   <div className="container">
-      <h1>Add New Product</h1>
+     
       {error && <p className="error">{error}</p>}
 
       <div className="add-product-container">
-        <div className="product-preview">
+        {/* <div className="product-preview">
           <ProductPreview formData={productData} />
-        </div>
+        </div> */}
         <div className="product-form">
           <ProductForm initialData={initialData} onSubmit={handleAddProduct} isSubmitting={loading} />
         </div>

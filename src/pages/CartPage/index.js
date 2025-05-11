@@ -51,7 +51,11 @@ export default function CartPage() {
 };
 
   if (status === "loading" || isLoading) {
-    return <div className="container mx-auto p-4">Loading cart...</div>;
+ return (
+    <div className="fixed inset-0 bg-[#8B5E3C] flex justify-center items-center">
+      <p className="text-white text-3xl font-bold">Loading...</p>
+    </div>
+  );
   }
 
   if (status === "unauthenticated") {
@@ -76,15 +80,22 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+      <h1 className="text-5xl font-serif font-bold mb-6">
+  Your <span className="text-[#8B5E3C]">Quick</span><span className="text-black">Cart</span>!
+</h1>
+
+
 
       {cart.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-600 mb-4">Your cart is empty</p>
-          <Link href="/products" className="text-blue-600 hover:underline">
-            Continue Shopping
-          </Link>
-        </div>
+        <div className="text-center py-12 bg-[#f3e1d1] ">
+  <p className="text-[#8B5E3C] text-xl mb-4">Your cart is empty 😢</p>
+  <Link href="/products">
+    <button className="text-white bg-[#8B5E3C] px-6 py-2  hover:bg-[#74462e] transition">
+      Continue Shopping
+    </button>
+  </Link>
+</div>
+
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
@@ -134,8 +145,9 @@ export default function CartPage() {
             ))}
           </div>
 
-          <div className="bg-gray-50 p-6 rounded-lg">
-            <h2 className="text-lg font-medium mb-4">Order Summary</h2>
+          <div className="bg-gray-50 p-6 ">
+           <h2 className="text-2xl font-bold mb-4 text-[#8B5E3C]">Order Summary</h2>
+
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
               <span>${cartTotal.toFixed(2)}</span>
@@ -149,17 +161,17 @@ export default function CartPage() {
 
             {showAddressForm ? (
               <div className="mt-6">
-                <label className="block mb-2 font-medium">Shipping Address</label>
+                <label className="block mb-2  font-medium">Shipping Address</label>
                 <textarea
                   value={shippingAddress}
                   onChange={(e) => setShippingAddress(e.target.value)}
-                  className="w-full p-2 border rounded mb-4"
+                  className="w-full p-2 border  mb-4"
                   rows={3}
                   placeholder="Enter your complete shipping address"
                 />
                 <button
                   onClick={handleCheckout}
-                  className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition"
+                  className="w-full bg-[#8B5E3C] text-white py-3  hover:bg-white hover:text-[#8B5E3C] border hover:border-[#8B5E3C] transition"
                   disabled={isLoading}
                 >
                   Confirm Order
@@ -169,14 +181,15 @@ export default function CartPage() {
               <>
                 <button
                   onClick={() => setShowAddressForm(true)}
-                  className="w-full bg-blue-600 text-white py-3 rounded mt-6 hover:bg-blue-700 transition"
+                  className="w-full bg-[#8B5E3C] text-white py-3 mt-6 hover:bg-[#74462e] transition"
+
                   disabled={isLoading}
                 >
                   Proceed to Checkout
                 </button>
                 <button
                   onClick={clearCart}
-                  className="w-full border border-gray-300 py-3 rounded mt-2 hover:bg-gray-100 transition"
+                  className="w-full border border-[#8B5E3C] py-3 mt-2 text-[#8B5E3C] hover:bg-gray-100 transition"
                   disabled={isLoading}
                 >
                   Clear Cart
