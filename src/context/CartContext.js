@@ -1,109 +1,190 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+// context/CartContext.js
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 
-// Create a Cart Context
 const CartContext = createContext();
 
-// Custom hook to use cart context
-export const useCart = () => {
-  return useContext(CartContext);
-};
+export function CartProvider({ children }) {
+  const { data: session, status } = useSession();
+  const [cart, setCart] = useState({ items: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-// CartContext Provider Component
-export const CartProvider = ({ children }) => {
-  const { data: session } = useSession();
-  const [cart, setCart] = useState([]);
+  const fetchCart = useCallback(async () => {
+    if (status !== "authenticated") {
+      setIsLoading(false);
+      return;
+    }
 
-  // Fetch cart from the backend when the user is logged in
-  useEffect(() => {
-    const fetchCart = async () => {
-      if (session) {
-        try {
-          const response = await fetch('/api/cart');
-          if (response.ok) {
-            const data = await response.json();
-            setCart(data); // Set the fetched cart state
-          }
-        } catch (error) {
-          console.error('Error fetching cart:', error);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch('/api/cart', {
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${session.accessToken}`
         }
-      }
-    };
+      });
 
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setCart(data);
+    } catch (err) {
+      console.error("Failed to fetch cart:", err);
+      setError(err.message);
+      setCart({ items: [] });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [session, status]);
+
+  useEffect(() => {
     fetchCart();
-  }, [session]);
+  }, [fetchCart]);
 
-  // Add item to cart
-  const addToCart = async (product, quantity) => {
-    const updatedCart = [...cart, { product, quantity }];
-    setCart(updatedCart);
+  const addToCart = async (product, quantity = 1) => {
+    if (status !== "authenticated") {
+      setError("Please login to add items to cart");
+      return;
+    }
 
-    if (session) {
-      await fetch('/api/cart', {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/cart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.accessToken}`
         },
-        body: JSON.stringify({
-          user: session.user.id,
-          productId: product._id,
-          quantity,
-        }),
+        credentials: 'include',
+        body: JSON.stringify({ productId: product._id, quantity }),
       });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setCart(data);
+      fetchCart()
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Update item quantity in the cart
-  const updateQuantity = async (productId, quantity) => {
-    const updatedCart = cart.map(item =>
-      item.product._id === productId ? { ...item, quantity } : item
-    );
-    setCart(updatedCart);
-
-    if (session) {
-      await fetch('/api/cart', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: session.user.id,
-          productId,
-          quantity,
-        }),
-      });
-    }
-  };
-
-  // Remove item from cart
   const removeFromCart = async (productId) => {
-    const updatedCart = cart.filter(item => item.product._id !== productId);
-    setCart(updatedCart);
+    if (status !== "authenticated") return;
 
-    if (session) {
-      await fetch('/api/cart', {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/cart', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.accessToken}`
         },
-        body: JSON.stringify({
-          user: session.user.id,
-          productId,
-        }),
+        credentials: 'include',
+        body: JSON.stringify({ productId }),
       });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setCart(data);
+    } catch (err) {
+      console.error("Failed to remove from cart:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const updateQuantity = async (productId, quantity) => {
+    if (status !== "authenticated") return;
+
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/cart', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.accessToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ productId, quantity }),
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      const data = await res.json();
+      setCart(data);
+    } catch (err) {
+      console.error("Failed to update quantity:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // context/CartContext.js
+  // context/CartContext.js
+  const clearCart = async () => {
+    if (status !== "authenticated") return;
+
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/cart', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.accessToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ items: [] }), // Send empty array to clear
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || 'Failed to clear cart');
+      }
+
+      const data = await res.json();
+      setCart(data);
+    } catch (err) {
+      console.error("Failed to clear cart:", err);
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const cartCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+  const cartTotal = cart?.items?.reduce(
+    (sum, item) => sum + ((item.product?.price || 0) * item.quantity),
+    0
+  ) || 0;
 
   return (
     <CartContext.Provider
       value={{
-        cart,
+        cart: cart?.items || [],
+        cartCount,
+        cartTotal,
+        isLoading,
+        error,
         addToCart,
-        updateQuantity,
         removeFromCart,
+        updateQuantity,
+        clearCart,
+        refreshCart: fetchCart,
       }}
     >
       {children}
     </CartContext.Provider>
   );
-};
+}
+
+export const useCart = () => useContext(CartContext);
