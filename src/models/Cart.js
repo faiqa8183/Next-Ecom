@@ -1,5 +1,4 @@
 // models/Cart.js
-
 import mongoose from 'mongoose';
 
 const cartSchema = new mongoose.Schema(
@@ -8,7 +7,7 @@ const cartSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      unique: true, // One cart per user
+      unique: true,
     },
     items: [
       {
@@ -30,5 +29,4 @@ const cartSchema = new mongoose.Schema(
 );
 
 const Cart = mongoose.models.Cart || mongoose.model('Cart', cartSchema);
-
 export default Cart;
