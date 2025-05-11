@@ -37,7 +37,7 @@ export default function Upload_Image({ onImageUpload }) {
   return (
     <div className="flex flex-col items-center gap-4">
       <input type="file" accept="image/*" onChange={handleChange} />
-      <button onClick={handleUpload} className="bg-purple-600 text-white px-4 py-2 rounded">
+      <button onClick={handleUpload} className="bg-[#8B5E3C] text-white px-4 py-2 ">
         Upload Image
       </button>
     </div>

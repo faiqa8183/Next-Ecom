@@ -1,18 +1,18 @@
 // pages/products/index.js
 import { useState } from "react";
-import CategoryNavbar from "../../components/CategoryNavbar";
-import UserMenu from "../../components/UserMenu";
+import CategoryNavbar from "../../components/Products/CategoryNavbar";
+import UserMenu from "../../components/Products/UserMenu";
 import { getAllProducts } from "../api/products";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import CartIcon from "@/components/CartComponent";
+import CartIcon from "@/components/Products/CartComponent";
 // Adjust path if necessary
 
-
+import Header from "@/components/Products/Header";
 
 const ProductIndex = ({ products }) => {
   const { addToCart } = useCart()
-  console.log("product", products)
+  //console.log("product", products)
   const [selectedCategory, setSelectedCategory] = useState("All");
   //const[selectshow, isShowSelected] =useState(false)
 
@@ -33,14 +33,18 @@ const ProductIndex = ({ products }) => {
 
   return (
     <div>
-      <header className="flex justify-between items-center p-4 bg-pink-50 shadow">
+      {/* <header className="flex justify-between items-center p-4 bg-pink-50 shadow">
         <h1 className="text-2xl font-bold">Products</h1>
-        <UserMenu />
         <CartIcon />
-      </header>
+        <UserMenu />
+    
+
+      </header> */}
+      <Header  />
+       <hr className="border-t border-gray-300" />
       <CategoryNavbar onCategoryChange={handleCategoryChange} />
 
-      <main className="p-4">
+      {/* <main className="p-4">
         {filteredProducts && filteredProducts.map((prod) => (
           <div key={prod._id} className="bg-white rounded-2xl shadow-md p-4 m-4 w-full max-w-xs">
             <img
@@ -63,7 +67,40 @@ const ProductIndex = ({ products }) => {
           </div>
         ))}
 
-      </main>
+      </main> */}
+      <main className="p-5 flex flex-wrap justify-between gap-3">
+  {filteredProducts && filteredProducts.map((prod) => (
+    <div
+      key={prod._id}
+      className="bg-white rounded-none shadow-lg p-6 w-full sm:w-64 lg:w-80 xl:w-96"
+    >
+      <img
+        src={prod.image}
+        alt={prod.title}
+        className="w-full h-60 object-cover mb-4"
+      />
+      <h2 className="text-xl font-semibold text-gray-800">{prod.title}</h2>
+      
+      <p className="text-[#8B5E3C] font-bold mt-2">${prod.price}</p>
+
+      <div className="flex justify-between gap-4 mt-4">
+        <button
+          onClick={() => addToCart(prod)}
+          className="px-4 py-2 bg-[#8B5E3C] text-white  hover:bg-[#6A3C1D] focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] transition"
+        >
+          Add to Cart
+        </button>
+
+        <Link href={`/products/${prod._id}`}>
+          <button className="px-4 py-2 text-[#8B5E3C] border-2 border-[#8B5E3C] bg-white  hover:bg-[#8B5E3C] hover:text-white transition">
+            View Details
+          </button>
+        </Link>
+      </div>
+    </div>
+  ))}
+</main>
+
     </div>
   );
 };
